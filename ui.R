@@ -6,49 +6,25 @@
 # 
 #    http://shiny.rstudio.com/
 #
-library(shiny)
-library(curl)
-library(jsonlite)
-library(dplyr)
-json_input <- fromJSON("https://fantasy.premierleague.com/drf/element-summary/8")
-json_input_hist<-json_input$history
-#position list
-position_listx <- as.data.frame(c("Goalkeeper","Defender","Midfielder","Forward"))
-position_list <- cbind(position_listx,c(1:4))
-colnames(position_list) <- c("position","element_type")
-#variable names
-var_names <- colnames(json_input$history)
-var_labels <-c("ICT index","Total points","Value","Transfers balance",
-               "Influence","Creativity","Threat","Selected","Transfers in","Transfers out","Minutes",
-               "Goals scored","Assists","Clean sheets","Goals conceded","Own goals","Penalties saved",
-               "Penalties missed","Yellow cards","Red cards","Saves","Bonus points","Bonus points system",
-                "open play crosses", "big chances created",
-               "Clearances blocks interceptions","Recoveries",
-               "Key passes","tackles","winning_goals", "attempted_passes",
-               "Completed passes","Penalties conceded","Big chances missed","Errors leading to goal",
-               "Errors leading to goal attempts","Tackled","Offsides","Target missed","Fouls","Dribbles","element",
-               "fixture","opponent_team","id","kickoff_time","kickoff_time_formatted","Home team score",
-               "Away team score","Was home","round","ea_index","Loaned in","Loaned out"
-               )
-var_name_labels <-cbind(var_names,var_labels)
 
-position_listy <- c("","Goalkeeper","Defender","Midfielder","Forward")
+
 # Define UI
 shinyUI(fluidPage(
     titlePanel("FPL stat attack!"),
     tabsetPanel(
         type = "tabs",
-        tabPanel("Player analysis",
+        tabPanel("2017/18 Player analysis",
 
     sidebarLayout(
         sidebarPanel(
             tags$body(
-                p("Use this tab to determine the top players by various statistics, controlling for
+                p("This tab contains player data from the 2017/18 season.
+                  Players can be ranked by various statistics on this tab, controlling for
               gameweek, cost and position.")
             ),
   # Application title
 
-  sliderInput("min_gw","Gameweek filter",1,nrow(json_input_hist),c(value=nrow(json_input_hist)-5,nrow(json_input_hist)),step=1),
+  sliderInput("min_gw","Gameweek filter",1,max(unlist_json_players$round),c(value=max(unlist_json_players$round)-5,max(unlist_json_players$round)),step=1),
   numericInput("no_players","Number of players to show",value=20,min=1),
   selectInput("stat","Stat to calculate",var_labels,selected=c("Total points")),
   selectInput("pos","Position filter",position_listy) ,
@@ -60,7 +36,7 @@ shinyUI(fluidPage(
     # output table based on the filters
     mainPanel(
 
-       tableOutput("fpl_table")
+       DT::dataTableOutput("fpl_table")
         )
     )
     ),
@@ -73,7 +49,7 @@ shinyUI(fluidPage(
                          gameweek periods using the slider.
                          Smaller fixture difficulty rating means easier fixtures!")
                        ),
-                   sliderInput("team_gw","Gameweek filter",1,38,c(value=nrow(json_input_hist),nrow(json_input_hist)+4),step=1)
+                   sliderInput("team_gw","Gameweek filter",1,38,c(value=max(unlist_json_players$round),max(unlist_json_players$round)+4),step=1)
                    ),
                
                mainPanel(tableOutput("team_table"))

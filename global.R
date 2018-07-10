@@ -12,7 +12,7 @@ library(DT)
 ##read in 2017/18 data
 unlist_json_players <- read.csv("https://www.dropbox.com/s/de3pp2pgj06w2xs/player_data201718.csv?dl=1")
 json_players_det <- read.csv("https://www.dropbox.com/s/xsdb07qqx2j8f9x/player_metadata%20201718.csv?dl=1")
-json_teams <- read.csv("https://www.dropbox.com/s/kffr8yh2qo8gyz3/team_data%20201718.csv?dl=1")
+json_teams <- read.csv("https://www.dropbox.com/s/t0uoq2gieq9xsaf/team_data.csv?dl=1")
 
 
 ##define some common v
@@ -37,6 +37,13 @@ fpl_team_listx <- as.data.frame(c("Arsenal","Bournemouth","Brighton","Burnley","
                                   "Stoke","Swansea","Tottenham","Watford","West Brom","West Ham"))
 fpl_team_list <- cbind(fpl_team_listx,c(1:20))
 colnames(fpl_team_list) <- c("team_name","team")
+
+##2018/19 season teams
+fpl_team_listx18 <- as.data.frame(c("Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
+                                  "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
+                                  "Tottenham","Watford","West Ham","Wolves"))
+fpl_team_list18 <- cbind(fpl_team_listx18,c(1:20))
+colnames(fpl_team_list18) <- c("team_name","team")
 
 position_listx <- as.data.frame(c("Goalkeeper","Defender","Midfielder","Forward"))
 position_list <- cbind(position_listx,c(1:4))

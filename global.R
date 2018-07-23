@@ -49,3 +49,8 @@ position_listx <- as.data.frame(c("Goalkeeper","Defender","Midfielder","Forward"
 position_list <- cbind(position_listx,c(1:4))
 colnames(position_list) <- c("position","element_type")
 position_listy <- c("","Goalkeeper","Defender","Midfielder","Forward")
+
+
+team_filter <- c("","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
+  "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
+  "Tottenham","Watford","West Ham","Wolves")

@@ -25,11 +25,14 @@ shinyUI(fluidPage(
   # Application title
 
   sliderInput("min_gw","Gameweek filter",1,max(unlist_json_players$round),c(value=max(unlist_json_players$round)-5,max(unlist_json_players$round)),step=1),
-  numericInput("no_players","Number of players to show",value=20,min=1),
+  
+  #numericInput("no_players","Number of players to show",value=20,min=1),
   selectInput("stat","Stat to calculate",var_labels,selected=c("Total points")),
-  selectInput("pos","Position filter",position_listy) ,
+  selectInput("pos","Position filter",position_listy),
+  selectInput("tm","Team filter",team_filter),
   sliderInput("cost","Price band filter",0,15,value=c(0,15),step=0.5)
-  # Sidebar with a slider input for number of bins 
+  
+   # Sidebar with a slider input for number of bins 
 
     ),
     
@@ -49,10 +52,13 @@ shinyUI(fluidPage(
                          gameweek periods using the slider.
                          Smaller fixture difficulty rating means easier fixtures!")
                        ),
-                   sliderInput("team_gw","Gameweek filter",1,38,c(value=max(unlist_json_players$round),max(unlist_json_players$round)+4),step=1)
+                   #sliderInput("team_gw","Gameweek filter",1,38,c(value=max(unlist_json_players$round),max(unlist_json_players$round)+4),step=1)
+                   #CHANGE THIS BACK AFTER GW1 
+                   sliderInput("team_gw","Gameweek filter",1,38,c(value=1,5),step=1)
+                   
                    ),
                
-               mainPanel(tableOutput("team_table"))
+               mainPanel( DT::dataTableOutput("team_table"))
                
       
   )

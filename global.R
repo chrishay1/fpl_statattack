@@ -57,3 +57,6 @@ position_listy <- c("","Goalkeeper","Defender","Midfielder","Forward")
 team_filter <- c("","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
   "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
   "Tottenham","Watford","West Ham","Wolves")
+
+fpl_team_list182 <- fpl_team_list18
+colnames(fpl_team_list182) <- c("opponent_name","opponent")

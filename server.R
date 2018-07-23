@@ -73,6 +73,7 @@
             colnames(total_diff)[1] <- c("team")
             total_diff <- full_join(total_diff,fpl_team_list18) %>% arrange(diff_rank)
             total_diff_x <- total_diff[,c("team_name","diff_rank","total_count","home_count","away_count")]
+            total_diff_x$diff_rank <- round(total_diff_x$diff_rank,2)
             colnames(total_diff_x) <- c("Team name","Average difficulty ranking","Total count","Home game count","Away games count")
             total_diff_x[is.na(total_diff_x)] <- 0
             

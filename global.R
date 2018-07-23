@@ -7,14 +7,17 @@ library(jsonlite)
 library(dplyr)
 library(knitr)
 library(DT)
+library(stringi)
 
 
 ##read in 2017/18 data
 unlist_json_players <- read.csv("https://www.dropbox.com/s/de3pp2pgj06w2xs/player_data201718.csv?dl=1")
-json_players_det <- read.csv("https://www.dropbox.com/s/xsdb07qqx2j8f9x/player_metadata%20201718.csv?dl=1")
+json_players_det <- read.csv("https://www.dropbox.com/s/nt9681eli4fdy1z/player_data_201718_2.csv?dl=1")
 json_teams <- read.csv("https://www.dropbox.com/s/t0uoq2gieq9xsaf/team_data.csv?dl=1")
-
-
+json_players_det$web_name <- as.character(json_players_det$web_name)
+json_players_det$web_name <- stri_encode(json_players_det$web_name, "", "UTF-8") 
+json_players_det$web_name <- stri_trans_general(json_players_det$web_name, "Latin-ASCII")
+json_players_det$web_name <- enc2native(json_players_det$web_name)
 ##define some common v
 var_names <- colnames(unlist_json_players)
 

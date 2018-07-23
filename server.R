@@ -58,7 +58,7 @@
 
                         return(player_data6)
         })  
-        output$fpl_table <- DT::renderDataTable(stat_table(),rownames=FALSE,options=list(pageLength=20,lengthMenu=c(10,20,50,100)))
+        output$fpl_table <- DT::renderDataTable(stat_table(),rownames=FALSE,options=list(searching=FALSE,encoding="UTF-8",pageLength=20,lengthMenu=c(10,20,50,100)))
     
         team_table <- reactive({
             #this part creates the team ranking

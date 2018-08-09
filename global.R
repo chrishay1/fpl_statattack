@@ -34,6 +34,16 @@ var_labels <-c("x","newid","id","kickoff_time","kickoff_time_formatted","Home te
                "fixture","opponent_team")
 
 var_name_labels <-cbind(var_names,var_labels)
+
+var_labels_out <- c("Total points","Minutes","Influence","Creativity","Threat","ICT index","Bonus points",
+                    "Bonus points system","Selected", "Transfers balance", 
+                   "Transfers in","Transfers out", "Goals scored","Assists","Clean sheets","Goals conceded","Own goals","Penalties saved",
+                   "Penalties missed","Yellow cards","Red cards","Saves",
+                   "open play crosses", "big chances created",
+                   "Clearances blocks interceptions","Recoveries",
+                   "Key passes","tackles", "Completed passes","Penalties conceded","Big chances missed","Errors leading to goal",
+                   "Errors leading to goal attempts","Tackled","Offsides","Target missed","Fouls","Dribbles")
+
 # Define server logic to load and filter the data
 fpl_team_listx <- as.data.frame(c("Arsenal","Bournemouth","Brighton","Burnley","Chelsea","Crystal Palace","Everton",
                                   "Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
@@ -53,6 +63,9 @@ position_list <- cbind(position_listx,c(1:4))
 colnames(position_list) <- c("position","element_type")
 position_listy <- c("","Goalkeeper","Defender","Midfielder","Forward")
 
+team_filter_1718 <- c("","Arsenal","Bournemouth","Brighton","Burnley","Chelsea","Crystal Palace","Everton",
+                      "Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
+                      "Stoke","Swansea","Tottenham","Watford","West Brom","West Ham")
 
 team_filter <- c("","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
   "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",

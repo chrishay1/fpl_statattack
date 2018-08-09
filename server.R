@@ -35,17 +35,24 @@
             colnames(player_team_index)[2] <-c("newid")
             colnames(player_team_index)[5] <-c("cost")
             player_team_index$cost <- player_team_index$cost/10
-            player_data_x <- player_data2[,c("newid",fpl_stat_use)]
-            colnames(player_data_x) <- c("newid","stat")
-            player_data3 <- player_data_x %>% group_by(newid) %>% summarise(mean = mean(stat),total=sum(stat)) %>% 
-                arrange(desc(mean)) %>% inner_join(player_team_index) %>% inner_join(fpl_team_list) %>%
+            player_data_x <- player_data2[,c("newid",fpl_stat_use,"minutes")]
+            colnames(player_data_x) <- c("newid","stat","minutes")
+            player_data3 <- player_data_x %>% mutate(Appearances=if_else(minutes > 0,1,0))%>%
+                group_by(newid) %>% summarise(mean = mean(stat),total=sum(stat),Appearances=sum(Appearances)) %>% 
+                mutate(stats_per_app = total/Appearances) %>%arrange(desc(mean)) %>% 
+                inner_join(player_team_index) %>% inner_join(fpl_team_list) %>%
                 inner_join(position_list)
             player_data3$mean <- round(player_data3$mean,2)
-            colnames(player_data3)[2] <- paste0("Average ",fpl_stat_use)
+            colnames(player_data3)[2] <- paste0("Average ",input$stat)
             
-            colnames(player_data3)[3] <- paste0("Total ",fpl_stat_use)
-           player_data4 <- player_data3[,-c(1,4,6)]
-           player_data5 <- player_data4[,c(3,4,5,6,1,2)]
+            colnames(player_data3)[3] <- paste0(input$stat)
+            
+            colnames(player_data3)[5] <- paste0("Average ",input$stat," per appearance")
+            player_data3[,5] <- round(player_data3[,5],2)
+            player_data4 <- player_data3[,-c(1,6,8)]
+            
+            player_data5 <- player_data4[,c(5,6,7,1,2,3,4)]
+            #apply some filters
             colnames(player_data5)[c(1:4)] <- c("Player name","Cost","Team name","Position")
             player_data6 <- player_data5[player_data5$Cost >=input$cost[1]&player_data5$Cost <= input$cost[2],]
             if (input$pos != ""){
@@ -60,6 +67,15 @@
         })  
         output$fpl_table <- DT::renderDataTable(stat_table(),rownames=FALSE,options=list(searching=FALSE,encoding="UTF-8",pageLength=20,lengthMenu=c(10,20,50,100)))
     
+        output$downloadData <- downloadHandler(
+            filename = function() {
+                paste(input$stat, ".csv", sep = "")
+            },
+            content = function(file) {
+                write.csv(stat_table(), file, row.names = FALSE)
+            }
+        )
+        
         team_table <- reactive({
             #this part creates the team ranking
             json_teams<- json_teams[json_teams$gw>=input$team_gw[1]&json_teams$gw<=input$team_gw[2],]

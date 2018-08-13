@@ -20,6 +20,13 @@ for (i in 1:nrow(json_players_det)) {
 }
 
 
+json_players_det$web_name <- as.character(json_players_det$web_name)
+json_players_det$web_name <- stri_encode(json_players_det$web_name, "", "UTF-8") 
+json_players_det$web_name <- stri_trans_general(json_players_det$web_name, "Latin-ASCII")
+json_players_det$web_name <- enc2native(json_players_det$web_name)
+
+
+write.csv(json_players_det,"C:/Users/pc/Dropbox/FPLData/player_metadata.csv")
 
 
 unlist_json_players <- bind_rows(json_player_list,.id="newid")
@@ -29,6 +36,8 @@ unlist_json_players$creativity <- as.numeric(unlist_json_players$creativity)
 unlist_json_players$threat <- as.numeric(unlist_json_players$threat)
 unlist_json_players$newid <- as.numeric(unlist_json_players$newid)
 unlist_json_players$ict_index <- as.numeric(unlist_json_players$ict_index)
+
+
 
 # colnames(unlist_json_players) <-c("newid","id","kickoff_time","kickoff_time_formatted","Home team score",
 #                                    "Away team score","Was home","round","Total points","Value","Transfers balance",
@@ -43,9 +52,9 @@ write.csv(unlist_json_players,"C:/Users/pc/Dropbox/FPLData/player_data.csv")
 
 #teams
 
-fpl_team_listx <- as.data.frame(c("Arsenal","Bournemouth","Brighton","Burnley","Chelsea","Crystal Palace","Everton",
-                                  "Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
-                                  "Stoke","Swansea","Tottenham","Watford","West Brom","west Ham"))
+fpl_team_listx <- as.data.frame(c("Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
+                                  "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
+                                  "Tottenham","Watford","west Ham","Wolves"))
 fpl_team_list <- cbind(fpl_team_listx,c(1:20))
 colnames(fpl_team_list) <- c("team_name","team")
 fixtures <- list()
@@ -56,6 +65,8 @@ for(j in c(1:38)){
     fixtures[[j]] <- fixtures_x
     
 }
+
+
 
 unlist_fixtures <- bind_rows(fixtures,.id="id")
 colnames(unlist_fixtures)[2:5] <- c("home_team","away_team","home_diff","away_diff")

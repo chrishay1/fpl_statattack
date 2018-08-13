@@ -9,15 +9,28 @@ library(knitr)
 library(DT)
 library(stringi)
 
-
 ##read in 2017/18 data
 unlist_json_players <- read.csv("https://www.dropbox.com/s/de3pp2pgj06w2xs/player_data201718.csv?dl=1")
+
+unlist_json_players_1819 <- read.csv("https://www.dropbox.com/s/cvso06zr4y8ibsk/player_data.csv?dl=1")
+
 json_players_det <- read.csv("https://www.dropbox.com/s/nt9681eli4fdy1z/player_data_201718_2.csv?dl=1")
+
+json_players_det_1819 <- read.csv("https://www.dropbox.com/s/jgm090pp7s0blxz/player_metadata.csv?dl=1")
+
 json_teams <- read.csv("https://www.dropbox.com/s/t0uoq2gieq9xsaf/team_data.csv?dl=1")
+
 json_players_det$web_name <- as.character(json_players_det$web_name)
 json_players_det$web_name <- stri_encode(json_players_det$web_name, "", "UTF-8") 
 json_players_det$web_name <- stri_trans_general(json_players_det$web_name, "Latin-ASCII")
 json_players_det$web_name <- enc2native(json_players_det$web_name)
+
+
+json_players_det_1819$web_name <- as.character(json_players_det_1819$web_name)
+json_players_det_1819$web_name <- stri_encode(json_players_det_1819$web_name, "", "UTF-8") 
+json_players_det_1819$web_name <- stri_trans_general(json_players_det_1819$web_name, "Latin-ASCII")
+json_players_det_1819$web_name <- enc2native(json_players_det_1819$web_name)
+
 ##define some common v
 var_names <- colnames(unlist_json_players)
 
@@ -61,13 +74,13 @@ colnames(fpl_team_list18) <- c("team_name","team")
 position_listx <- as.data.frame(c("Goalkeeper","Defender","Midfielder","Forward"))
 position_list <- cbind(position_listx,c(1:4))
 colnames(position_list) <- c("position","element_type")
-position_listy <- c("","Goalkeeper","Defender","Midfielder","Forward")
+position_listy <- c("None","Goalkeeper","Defender","Midfielder","Forward")
 
-team_filter_1718 <- c("","Arsenal","Bournemouth","Brighton","Burnley","Chelsea","Crystal Palace","Everton",
+team_filter_1718 <- c("None","Arsenal","Bournemouth","Brighton","Burnley","Chelsea","Crystal Palace","Everton",
                       "Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
                       "Stoke","Swansea","Tottenham","Watford","West Brom","West Ham")
 
-team_filter <- c("","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
+team_filter <- c("None","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","Chelsea","Crystal Palace","Everton",
   "Fulham","Huddersfield","Leicester","Liverpool","Man City","Man Utd","Newcastle","Southampton",
   "Tottenham","Watford","West Ham","Wolves")
 

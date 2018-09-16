@@ -10,7 +10,7 @@
     
     
     shinyServer(function(input, output) {
-        
+        #2017/18 player statistics
         stat_table <- reactive({
             
             fpl_stat_use <-var_names[match(input$stat,var_labels)]
@@ -22,8 +22,6 @@
             position_list <- cbind(position_listx,c(1:4))
             colnames(position_list) <- c("position","element_type")
             
-            
-            nrow(unlist_json_players)
             
             
             fpl_start <- input$min_gw[1]
@@ -76,6 +74,7 @@
             }
         )
         
+        #2018/19 player statistics
         
         stat_table_1819 <- reactive({
             
@@ -141,7 +140,7 @@
                 write.csv(stat_table_1819(), file, row.names = FALSE)
             }
         )
-        
+        #team difficulty statistics
         team_table <- reactive({
             #this part creates the team ranking
             json_teams<- json_teams[json_teams$gw>=input$team_gw[1]&json_teams$gw<=input$team_gw[2],]
@@ -186,8 +185,54 @@
         })
         output$team_table <-DT::renderDataTable(team_table(),rownames=FALSE,
                                                 options=list(searching=FALSE,paging=FALSE))
-    })
+   
+
+    #player predictions        
+    player_pred_table <- reactive({
+        #need to multiply the clean sheet etc likelihood by the likelihood of playing
+        
+        player_preds$adjud_cs_likelihood <- player_preds$play_likelihood * player_preds$cs_likelihood
+        player_preds$adjud_goal_likelihood <- player_preds$play_likelihood * player_preds$goal_likelihood
+        player_preds$adjud_assist_likelihood <- player_preds$play_likelihood * player_preds$assist_likelihood
+        
+        
+                
+        highest_points <- player_preds %>%filter(event>=input$pred_filter[1] &event<=input$pred_filter[2])%>%
+            group_by(newid,web_name,team_name,position,value)%>%
+            summarise(expected_points=sum(expected_points)/n(),
+                      play_likelihood=sum(play_likelihood)/n(),
+                      cs_likelihood= sum(adjud_cs_likelihood)/n(),
+                      goal_likelihood=sum(adjud_goal_likelihood)/n(),
+                      assist_likelihood=sum(adjud_assist_likelihood)/n()) %>%
+            mutate(points_per_value=expected_points/value) %>%
+           arrange(desc(expected_points))
+        
+        highest_points$expected_points <- round(highest_points$expected_points,2)
+        highest_points$play_likelihood <- round(highest_points$play_likelihood,2)
+        highest_points$cs_likelihood <- round(highest_points$cs_likelihood,2)
+        highest_points$goal_likelihood <- round(highest_points$goal_likelihood,2)
+        highest_points$assist_likelihood <- round(highest_points$assist_likelihood,2)
+        highest_points$points_per_value <- round(highest_points$points_per_value*100,2)
+        highest_points$value <- highest_points$value/10
+        highest_points <- highest_points[,-1]
         
      
-      
+         colnames(highest_points) <- c("Name","Team name","Position","Cost","Average expected points",
+                                       "Average likelihood of playing","Average likelihood of a clean sheet",
+                                       "Average likelihood of a goal","Average likelihood of an assist",
+                                       "Average expected points per cost")
+         
+         highest_points <- highest_points[highest_points$Cost >=input$pred_cost[1]&highest_points$Cost <= input$pred_cost[2],]
+         if (input$pred_pos != "None"){
+             highest_points <- highest_points %>%filter(`Position`==input$pred_pos)   
+         }
+         if (input$pred_tm != "None"){
+             highest_points <- highest_points %>%filter(`Team name`==input$pred_tm)   
+         }
+        return(highest_points)  
+    })
+    output$player_preds <-DT::renderDataTable(player_pred_table(),rownames=FALSE,
+                                              options=list(searching=FALSE,encoding="UTF-8",
+                                              pageLength=20,lengthMenu=c(10,20,50,100)))
+    })
     

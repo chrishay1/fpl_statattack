@@ -97,7 +97,27 @@ shinyUI(fluidPage(
                
       
   )
-  )
+  ),
+  tabPanel("Player predictions",
+           sidebarLayout(
+               sidebarPanel(
+                   tags$body(
+                       p("This tab contains predictions based on regression modelling of player 
+                          performance during the 2017/18 season,applied to 2018/19 data.")
+                       ),
+
+                   sliderInput("pred_filter","Gameweek filter",1,38,c(value=max(unlist_json_players_1819$round)+1,max(unlist_json_players_1819$round)+5),step=1),
+                   selectInput("pred_pos","Position filter",position_listy),
+                   selectInput("pred_tm","Team filter",team_filter),
+                   sliderInput("pred_cost","Price band filter",0,15,value=c(0,15),step=0.5)
+                   
+                       ),
+               
+               mainPanel( DT::dataTableOutput("player_preds"))
+               
+               
+                   )
+           )
   )
   
 )

@@ -1,4 +1,6 @@
 
+#FPL STAT ATTACK
+
 #This file contains some data read ins that we want to share across UI and server.
 
 library(shiny)
@@ -86,3 +88,8 @@ team_filter <- c("None","Arsenal","Bournemouth","Brighton","Burnley","Cardiff","
 
 fpl_team_list182 <- fpl_team_list18
 colnames(fpl_team_list182) <- c("opponent_name","opponent")
+
+#read in player predictions
+
+player_preds <- read.csv("https://www.dropbox.com/s/4xvfnzyeyt6tbe4/player_predictions.csv?dl=1")
+

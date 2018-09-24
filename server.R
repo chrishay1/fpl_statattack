@@ -234,7 +234,7 @@
          options=list(searching=FALSE,encoding="UTF-8",
                       pageLength=20,lengthMenu=c(10,20,50,100)))
         highest_points <- formatPercentage(highest_points,c( 'Average likelihood of playing','Average likelihood of a clean sheet',
-                                                             'Average likelihood of a goal','Average likelihood of an assist'),1)
+                                                             'Average likelihood of a goal','Average likelihood of an assist'))
 
         return(highest_points)  
         

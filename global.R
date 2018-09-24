@@ -11,6 +11,7 @@ library(knitr)
 library(DT)
 library(stringi)
 
+
 ##read in 2017/18 data
 unlist_json_players <- read.csv("https://www.dropbox.com/s/de3pp2pgj06w2xs/player_data201718.csv?dl=1")
 

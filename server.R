@@ -229,10 +229,16 @@
          if (input$pred_tm != "None"){
              highest_points <- highest_points %>%filter(`Team name`==input$pred_tm)   
          }
+         highest_points  <- datatable(highest_points,
+         rownames=FALSE,
+         options=list(searching=FALSE,encoding="UTF-8",
+                      pageLength=20,lengthMenu=c(10,20,50,100)))
+        highest_points <- formatPercentage(highest_points,c( 'Average likelihood of playing','Average likelihood of a clean sheet',
+                                                             'Average likelihood of a goal','Average likelihood of an assist'),1)
+
         return(highest_points)  
+        
     })
-    output$player_preds <-DT::renderDataTable(player_pred_table(),rownames=FALSE,
-                                              options=list(searching=FALSE,encoding="UTF-8",
-                                              pageLength=20,lengthMenu=c(10,20,50,100)))
+    output$player_preds <-DT::renderDataTable(player_pred_table())
     })
     
